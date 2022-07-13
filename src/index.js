@@ -8,6 +8,9 @@ export const APIURL = `https://strangers-things.herokuapp.com/api/${cohortName}`
 const App = () => {
   const [posts, setPosts] = useState([]);
   const [postId, setPostId] = useState(null);
+  const [token, setToken] = useState();
+  const [user, setUser] = useState();
+  const [password, setPassword] = useState();
 
   useEffect(() => {
     const fetchAllPosts = async () => {
