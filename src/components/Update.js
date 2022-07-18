@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { APIURL } from "../index";
 
-const Update = ({ posts, setPosts, postId, setPostId }) => {
+const Update = ({ posts, setPosts, postId, setPostId, token }) => {
   const [title, setTitle] = useState([]);
   const [description, setDescription] = useState([]);
   const [price, setPrice] = useState("");
@@ -12,6 +12,7 @@ const Update = ({ posts, setPosts, postId, setPostId }) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         post: {

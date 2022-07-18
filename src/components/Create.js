@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { APIURL } from "../index";
 
-const Create = ({ posts, setPosts }) => {
+const Create = ({ posts, setPosts, token }) => {
   const [title, setTitle] = useState([]);
   const [description, setDescription] = useState([]);
+  const [price, setPrice] = useState("");
+  const [location, setLocation] = useState("");
+  const [deliver, setDeliver] = useState(false);
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
@@ -12,11 +15,14 @@ const Create = ({ posts, setPosts }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer TOKEN_STRING_HERE",
+        Authorization: "Bearer"`${token}`,
       },
       body: JSON.stringify({
         title,
         description,
+        price,
+        location,
+        deliver,
       }),
     });
     const result = await response.json();
@@ -39,6 +45,26 @@ const Create = ({ posts, setPosts }) => {
           value={description}
           onChange={(ev) => setDescription(ev.target.value)}
         ></input>
+        <input
+          type="text"
+          placeholder="price"
+          value={price}
+          onChange={(ev) => setPrice(ev.target.value)}
+        ></input>
+        <input
+          type="text"
+          placeholder="location"
+          value={location}
+          onChange={(ev) => setLocation(ev.target.value)}
+        ></input>
+        <input
+          type="checkbox"
+          id="willDeliver"
+          name="willDeliver"
+          value={deliver}
+          onChange={(ev) => setDeliver(ev.target.value)}
+        ></input>
+        <label className="willDeliver">Will Deliver</label>
         <button type="submit" className="btn btn-outline-primary">
           Submit
         </button>
