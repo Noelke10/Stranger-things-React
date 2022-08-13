@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { APIURL } from "../index";
+import { useNavigate } from "react-router-dom";
 
 const Update = ({ posts, setPosts, postId, setPostId, token }) => {
-  const [title, setTitle] = useState([]);
-  const [description, setDescription] = useState([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const history = useNavigate();
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
@@ -37,6 +39,7 @@ const Update = ({ posts, setPosts, postId, setPostId, token }) => {
       setDescription("");
       setPostId("");
       setPrice("");
+      history("/Userpage");
     }
   };
 

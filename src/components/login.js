@@ -1,5 +1,5 @@
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import * as React from "react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -17,28 +17,31 @@ async function userLogin(username, password) {
     },
     body: JSON.stringify({
       user: {
-        username: "username",
-        password: "password",
+        username: username,
+        password: password,
       },
     }),
   })
     .then((response) => response.json())
     .then((result) => {
       console.log(result);
+      return result.data.token;
     })
     .catch(console.error);
 }
 
-function Login({ setToken, setUsername, setPassword, username, password }) {
+function Login({ setToken }) {
   const history = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = await userLogin(username, password);
       if (token) {
-        sessionStorage.setItem("token", token);
+        sessionStorage.setItem("token", JSON.stringify(token));
         setToken(token);
-        history("/UserPage");
+        history("/Homepage");
         alert("You are logged in!");
       } else {
         alert("Username or passowrd are incorrect");

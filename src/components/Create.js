@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { APIURL } from "../index";
+import { useNavigate } from "react-router-dom";
 
 const Create = ({ posts, setPosts, token }) => {
+  const history = useNavigate;
   const [title, setTitle] = useState([]);
   const [description, setDescription] = useState([]);
   const [price, setPrice] = useState("");
@@ -27,6 +29,7 @@ const Create = ({ posts, setPosts, token }) => {
     });
     const result = await response.json();
     setPosts([result, ...posts]);
+    history("/Userpage");
   };
 
   return (

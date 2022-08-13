@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import Button from "@mui/material/Button";
@@ -9,61 +10,76 @@ import { CssBaseline, Typography } from "@mui/material";
 const cohortName = "2204-ftb-et-web-pt";
 const APIURL = `https://strangers-things.herokuapp.com/api/${cohortName}`;
 
-async function registerUser(username, password) {
-  console.log(username);
-  return fetch(`${APIURL}/users/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      user: {
-        username: username,
-        password: password,
-      },
-    }),
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      console.log(result);
-      return result;
-    })
-    .catch(console.error);
-}
-
-function Register({ setToken, setUserName, setPassword, username, password }) {
+function Register() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  // const [token, setToken] = useState("");
   const history = useNavigate();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const result = await registerUser(username, password);
-    const token = result.data.token;
 
-    sessionStorage.setItem("token", JSON.stringify(token));
-    setToken(token);
-    history();
-    alert("You created a new user account!");
+  const handleRegister = async (username, password) => {
+    try {
+      const response = await fetch(`${APIURL}/users/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user: { username: username, password: password },
+        }),
+      });
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await handleRegister(username, password);
+    const token = result.data.token;
+    console.log("token", token);
+    // console.log("setToken", setToken);
+    sessionStorage.setItem("token", JSON.stringify(token));
+    // setToken(token);
+    history("/Homepage");
+    alert("You have created a new user!");
+  };
+
+  // async function registerUser(username, password) {
+  //   console.log(username);
+  //   return fetch(`${APIURL}/users/register`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       user: {
+  //         username: username,
+  //         password: password,
+  //       },
+  //     }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((result) => {
+  //       console.log(result);
+  //       return result;
+  //     })
+  //     .catch(console.error);
+  // }
+
+  // function Register({ setToken, setUserName, setPassword, username, password }) {
+  //   const history = useNavigate();
+  //   const handleSubmit = async (e) => {
+  //     e.preventDefault();
+  //     const data = await registerUser(username, password);
+  //     const token = data.data.token;
+
+  //     sessionStorage.setItem("token", JSON.stringify(token));
+  //     setToken(token);
+  //     history("/Userpage");
+  //     alert("You created a new user account!");
+  //   };
+
   return (
-    // <div className="register-container">
-    //   <form onSubmit={handleSubmit}>
-    //     <h1>Please Register</h1>
-    //     <label>
-    //       <p>Username</p>
-    //       <input type="text" onChange={(e) => setUserName(e.target.value)} />
-    //     </label>
-    //     <label>
-    //       <p>Password</p>
-    //       <input
-    //         type="password"
-    //         onChange={(e) => setPassword(e.target.value)}
-    //       />
-    //     </label>
-    //     <div>
-    //       <button type="submit">Submit</button>
-    //     </div>
-    //   </form>
-    // </div>
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
@@ -85,7 +101,7 @@ function Register({ setToken, setUserName, setPassword, username, password }) {
             id="outlined-required"
             label="Username"
             value={username}
-            onChange={(e) => setUserName(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           ></TextField>
           <TextField
             margin="normal"

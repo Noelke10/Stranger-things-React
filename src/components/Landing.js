@@ -17,7 +17,7 @@ const Landing = () => {
   return (
     <>
       <h1>Stranger's Things</h1>
-      <button type="button" onClick={"/login"}>
+      <button type="button" path={"/Login"}>
         Login
       </button>
       <button type="button" onClick={"/Register"}>
